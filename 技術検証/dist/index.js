@@ -1,7 +1,7 @@
 async function fetchUsers() {
   try {
     // サーバー側のAPI（users.ts）を呼び出す
-    const response = await fetch('/api/users'); // もしファイル名が user.ts なら '/api/user' にしてね
+    const response = await fetch('../fuctions/api/users'); // もしファイル名が user.ts なら '/api/user' にしてね
     const data = await response.json();
     
     console.log("D1から取得したユーザー一覧:", data);

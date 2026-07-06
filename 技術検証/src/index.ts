@@ -1,6 +1,6 @@
 async function fetchUsers() {
   try {
-    const response = await fetch('/api/users');
+    const response = await fetch('../functions/api/users');
     const data = await response.json();
     console.log("D1から取得したユーザー一覧:", data);
   } catch (error) {
