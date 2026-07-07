@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>就職活動支援システム だいじょうぶ</title>
+    <style>
+        /* 8.4 ユーザビリティ要件に基づくカラーパレットとタイポグラフィ */
+        :root {
+            --bg-color: #f8fafc;
+            --main-color: #1e3a8a; /* 信頼感を与えるネイビー */
+            --accent-color: #ea580c; /* 注意を促すオレンジ */
+            --text-color: #334155;
+            --error-color: #dc2626;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ヘッダー・ロゴ */
+        .header {
+            background-color: var(--main-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        /* パネル共通 */
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* フォーム要素 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: white;
+            background-color: var(--accent-color);
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .error-msg {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* ボタン */
+        .btn-primary {
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e40af;
+        }
+
+        .btn-primary:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--main-color);
+            border: 1px solid var(--main-color);
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .link-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .link-list li {
+            margin-bottom: 10px;
+        }
+
+        .link-list a {
+            color: var(--main-color);
+            text-decoration: none;
+        }
+
+        /* 表示切り替え用クラス */
+        .hidden {
+            display: none;
+        }
+
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="view-login" class="container">
+    <div class="header" style="justify-content: center;">
+        <h1>就職活動支援システム だいじょうぶ</h1>
+    </div>
+    <div class="panel">
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>メールアドレス</label>
+                <input type="email" id="email" placeholder="student@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>パスワード</label>
+                <input type="password" id="password" required minlength="8">
+            </div>
+            <button type="submit" id="loginBtn" class="btn-primary">ログイン</button>
+        </form>
+        <ul class="link-list">
+            <li><a href="#">>> 新規アカウント作成（学生用）はこちら</a></li>
+            <li><a href="#">>> 教員用アカウント申請はこちら</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="view-dashboard" class="container hidden">
+    <div class="header">
+        <h1>だいじょうぶ - 学生ホーム</h1>
+        <div>高階 様 <a href="#" style="color:white; margin-left:15px;" onclick="switchView('view-login')">ログアウト</a></div>
+    </div>
+    <div class="panel" style="text-align: center;">
+        <h2>ようこそ、高階さん</h2>
+        <p>現在の状態：就職活動中</p>
+        <div style="max-width: 400px; margin: 0 auto;">
+            <button class="btn-primary" onclick="switchView('view-submit')">活動報告書を提出する</button>
+            <button class="btn-secondary" onclick="alert('報告書検索機能は開発中です。')">活動報告書を検索・閲覧する</button>
+        </div>
+    </div>
+</div>
+
+<div id="view-submit" class="container hidden">
+    <div class="header">
+        <h1>だいじょうぶ</h1>
+        <div>高階 様 <a href="#" style="color:white; margin-left:15px;" onclick="switchView('view-login')">ログアウト</a></div>
+    </div>
+    <div class="panel">
+        <div class="breadcrumb">ホーム > 報告書提出</div>
+        <h2>活動報告書の新規作成</h2>
+        <form id="reportForm" onsubmit="handleSubmit(event)">
+            
+            <div class="form-group">
+                <label>1. 会社名 <span class="required">必須</span></label>
+                <input type="text" id="companyName" placeholder="例：株式会社サンプル" required maxlength="100">
+            </div>
+
+            <div class="form-group">
+                <label>2. 業種 <span class="required">必須</span></label>
+                <select required>
+                    <option value="" disabled selected>選択してください ▽</option>
+                    <option value="IT">IT・通信</option>
+                    <option value="Finance">金融</option>
+                    <option value="Manufacturing">メーカー・製造</option>
+                    <option value="Trading">商社</option>
+                    <option value="Media">マスコミ・広告</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>3. 選考段階 <span class="required">必須</span></label>
+                <label style="font-weight: normal;"><input type="radio" name="phase" value="intern" required> インターン</label>
+                <label style="font-weight: normal;"><input type="radio" name="phase" value="selection"> 本選考</label>
+            </div>
+
+            <div class="form-group">
+                <label>4. 面接形式 <span class="required">必須</span></label>
+                <select required>
+                    <option value="" disabled selected>選択してください ▽</option>
+                    <option value="対面（個人）">対面（個人）</option>
+                    <option value="対面（集団）">対面（集団）</option>
+                    <option value="オンライン（個人）">オンライン（個人）</option>
+                    <option value="オンライン（集団）">オンライン（集団）</option>
+                    <option value="グループディスカッション">グループディスカッション</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>5. 選考内容 <span class="required">必須</span></label>
+                <textarea placeholder="具体的な質問内容や試験内容を詳細に記述してください（最大2,000文字）" required maxlength="2000"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>6. 感想・アドバイス <span class="required">必須</span></label>
+                <textarea placeholder="後輩に向けた具体的な対策方法や、実際の雰囲気を記述してください（最大2,000文字）" required maxlength="2000"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>7. 公開設定 <span class="required">必須</span></label>
+                <label style="font-weight: normal;"><input type="radio" name="public" value="true" checked> 他の学生に公開する</label>
+                <label style="font-weight: normal;"><input type="radio" name="public" value="false"> 公開しない</label>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-secondary" onclick="switchView('view-dashboard')">キャンセル</button>
+                <button type="button" class="btn-secondary" onclick="alert('一時保存しました。')">一時保存</button>
+                <button type="submit" id="submitBtn" class="btn-primary">審査へ提出する</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // 画面遷移を管理する簡易ルーティング関数
+    function switchView(viewId) {
+        document.getElementById('view-login').classList.add('hidden');
+        document.getElementById('view-dashboard').classList.add('hidden');
+        document.getElementById('view-submit').classList.add('hidden');
+        
+        document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    // ログイン処理（デモ用モック）
+    function handleLogin(e) {
+        e.preventDefault();
+        const btn = document.getElementById('loginBtn');
+        
+        // 8.4 二重送信防止制御：ボタンを非活性化
+        btn.disabled = true;
+        btn.innerText = "認証中...";
+
+        // 通信遅延をシミュレート（1秒後に画面遷移）
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerText = "ログイン";
+            switchView('view-dashboard');
+        }, 1000);
+    }
+
+    // 報告書提出処理
+    function handleSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        
+        // 8.4 二重送信防止制御
+        btn.disabled = true;
+        btn.innerText = "送信中...";
+
+        setTimeout(() => {
+            alert('活動報告書を「承認待ち」として提出しました！');
+            btn.disabled = false;
+            btn.innerText = "審査へ提出する";
+            document.getElementById('reportForm').reset(); // フォームをクリア
+            switchView('view-dashboard');
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
